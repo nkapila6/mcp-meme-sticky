@@ -64,17 +64,32 @@ def GoogleParser(base_url, params, return_gif)->list:
                 # return uris, [{"file_url": uri} for uri in uris]
                 bgs.extend(uris)
     return bgs
+
+def is_image_url_valid(url, timeout=5):
+    try:
+        response = requests.head(url, timeout=timeout)
+        if response.status_code == 200:
+            content_type = response.headers.get('Content-Type', '')
+            if 'image' in content_type:
+                return True
+        return False
+    except requests.exceptions.RequestException:
+        return False
         
 def GoogleCrawler(keyword:str, return_gif:bool=False)->list:
     url, base_url, params = GoogleFeeder(keyword, return_gif)
     print(f'Search URL is {url} with params {params}.')
-    bgs = GoogleParser(base_url, params, return_gif)
+    backgrounds = GoogleParser(base_url, params, return_gif)
+    # take only first 10
+    bgs = backgrounds[:10]
     bgs = [url for url in bgs if not any(x in url for x in [
         'istockphoto', 
         'redd', 
         'google.com/search', 
         'cdn-icons-png', 
         'hiclipart',
-        'makeagif'
+        'makeagif', 
+        'pinterest'
     ]) and url != 'https://png']
+    bgs = [url for url in bgs if is_image_url_valid(url)]
     return bgs
