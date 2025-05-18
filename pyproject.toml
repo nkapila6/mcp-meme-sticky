@@ -5,6 +5,7 @@ description = "mcp-local-sticky: MCP server to create WhatsApp or Telegram stick
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "icrawler>=0.6.10",
+    "beautifulsoup4>=4.13.4",
     "mcp[cli]>=1.9.0",
+    "requests>=2.32.3",
 ]
