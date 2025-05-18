@@ -1,0 +1,10 @@
+[project]
+name = "mcp-sticky"
+version = "0.1.0"
+description = "mcp-local-sticky: MCP server to create WhatsApp or Telegram sticker. ✨No APIs✨"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "icrawler>=0.6.10",
+    "mcp[cli]>=1.9.0",
+]
