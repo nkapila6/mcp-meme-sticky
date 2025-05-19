@@ -8,10 +8,24 @@ Created on 2025-05-18 23:20:31 Sunday
 
 # URL creation and fetching utils
 
+import pickle
 from .crawlers.google import GoogleCrawler
 
 TELEGRAM_BOT_URL = "https://t.me/mcp_sticky_bot?text="
 MEMEGEN_URL = "https://api.memegen.link/images/custom/_/{text}.png?background={url}"
+
+def fetch_resource(path:str)->dict:
+    """Fetches a pickled object at specified path.
+
+    Args:
+        path (str): Pickled object.
+
+    Returns:
+        dict: fetched dict.
+    """
+
+    with open(path, 'rb') as f:
+        return pickle.load(f)
 
 def fetch_image_url(search_query:str)->str:
     """Fetch Image URL.
