@@ -25,6 +25,14 @@ async def parse_message(message:str, ctx:Context)->tuple:
 
     Generates a meme or sticker based on the users request. 
     Analyze the incoming message, extract relevant search terms and generate meme text.
+
+    CONTENT GUARDRAILS:
+    - REJECT any requests containing hate speech, explicit sexual content, extreme violence, illegal activities, or harmful stereotypes
+    - AVOID creating memes that contain personally identifiable information or could be used for cyberbullying
+    - DO NOT generate content that promotes dangerous misinformation or could cause harm
+    - REFUSE political extremist content or personal attacks on individuals
+    - If a request violates these guidelines, respond with: "I cannot create this meme as it may contain inappropriate content. Please try a different request."
+    
     Reply with the following:
     1. What should I search for on Google Search to find an appropriate image? Give a clear search query.
     2. What text should be placed on the meme? 
@@ -40,7 +48,7 @@ async def parse_message(message:str, ctx:Context)->tuple:
         ctx (Context): Incoming context.
 
     Returns:
-        Nothing, the LLM just constructs the output for `generate_meme()`.
+        Nothing, the LLM just constructs the input for `generate_meme()`.
     """
     await ctx.info('Parsing input message...')
     print(message)
@@ -77,7 +85,10 @@ async def generate_meme(message:str,
     url = fetch_image_url(search_query)
     meme_link = make_meme(url, meme_text)
 
-    if save_as_image: save_image(meme_link)
+    if save_as_image: 
+        path = save_image(meme_link)
+        print(f'Image saved at {path}.')
+
 
     if want_tele_sticker:  return fetch_tele_link(meme_link)
 

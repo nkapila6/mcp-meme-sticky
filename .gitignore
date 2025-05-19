@@ -1,3 +1,5 @@
+*.ipynb
+
 # fuku macOS
 .DS_Store
 
