@@ -7,12 +7,11 @@ Created on 2025-05-18 23:20:31 Sunday
 """
 
 # URL creation and fetching utils
-
 import pickle
 from .crawlers.google import GoogleCrawler
 
 TELEGRAM_BOT_URL = "https://t.me/mcp_sticky_bot?text="
-MEMEGEN_URL = "https://api.memegen.link/images/custom/_/{text}.png?background={url}"
+MEMEGEN_CUSTOM_URL = "https://api.memegen.link/images/custom/_/{text}.png?background={url}"
 
 def fetch_resource(path:str)->dict:
     """Fetches a pickled object at specified path.
@@ -40,8 +39,8 @@ def fetch_image_url(search_query:str)->str:
     url = GoogleCrawler(search_query)[0]
     return url
 
-def make_meme(url:str, meme_text:str)->str:
-    """Makes meme using memegen.link.
+def make_meme_custom(url:str, meme_text:str)->str:
+    """Makes custom meme using memegen.link.
     https://memegen.link/
 
     Args:
@@ -51,8 +50,26 @@ def make_meme(url:str, meme_text:str)->str:
     Returns:
         str: returns URL.
     """
-    return MEMEGEN_URL.format(text=meme_text,
+    return MEMEGEN_CUSTOM_URL.format(text=meme_text,
                               url=url)
+
+def make_meme_from_template(url:str, meme_text:list)->str:
+    """Make meme using memegen templates.
+
+    Args:
+        url (str): Memegen URL from db.
+        meme_text (list): A list of texts for the template.
+
+    Returns:
+        str: Memegen link.
+    """
+    # getting rid of .jpg
+    
+    url = url[:-4]
+    for i in meme_text:
+        url = f'{url}/{i}'
+    url = f'{url}.jpg'
+    return url
 
 def fetch_tele_link(url:str)->str:
     """Makes Telegram Link to MCP Sticky Bot to create Sticker.
