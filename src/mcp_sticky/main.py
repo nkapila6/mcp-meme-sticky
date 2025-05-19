@@ -17,8 +17,28 @@ from utils.save import save_image
 mcp = FastMCP('MCP Sticky: Meme and Sticker Maker for WhatsApp and Telegram', 
               dependencies=['beautifulsoup4', 'json', 'requests'])
 
-# for preset meme templates
-MEMEGEN_URL_PRESET = ""
+# preset paths
+# RESOURCE_PATH = os.path.join(os.getcwd(), 'resources')
+# KEYS_PATH = os.path.join(RESOURCE_PATH,'db_keys.pkl')
+# DB_PATH = os.path.join(RESOURCE_PATH,'db.pkl')
+
+# async def make_meme(message:str, ctx:Context):
+@mcp.tool()
+async def fetch_key_context(message:str, ctx:Context)->dict:
+    """
+    THIS TOOL IS TO BE CALLED FIRST AND IS TO PROVIDE ADDITIONAL CONTEXT to the next tool `parse_message()`.
+    Gives the LLM additional context on available predefined templates.
+    
+    Args:
+        message (str): Input query to make a meme on.
+        ctx (Context): Incoming context.
+
+    Returns:
+        dict: 
+    """
+    await ctx.info('Fetching keys for additional context.')
+    from resources.db import templates
+    return dict(message=message, templates=templates)
 
 @mcp.tool()
 async def parse_message(message:str, ctx:Context)->tuple:
