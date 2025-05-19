@@ -11,7 +11,8 @@ from fastmcp import FastMCP, Context
 # import os
 
 from utils.fetch import fetch_image_url, fetch_tele_link # unused: , fetch_resource
-from utils.fetch import make_meme
+from utils.fetch import make_meme_custom, make_meme_from_template
+from utils.url_checker import is_url
 from utils.save import save_image
 
 mcp = FastMCP('MCP Sticky: Meme and Sticker Maker for WhatsApp and Telegram', 
@@ -24,21 +25,28 @@ mcp = FastMCP('MCP Sticky: Meme and Sticker Maker for WhatsApp and Telegram',
 
 # async def make_meme(message:str, ctx:Context):
 @mcp.tool()
-async def fetch_key_context(message:str, ctx:Context)->dict:
+async def fetch_key_context(message:str, ctx:Context, limit:int=5)->dict:
     """
     THIS TOOL IS TO BE CALLED FIRST AND IS TO PROVIDE ADDITIONAL CONTEXT to the next tool `parse_message()`.
     Gives the LLM additional context on available predefined templates.
     
     Args:
         message (str): Input query to make a meme on.
+        limit (int, default=5): Limit number of queries to not run out of LLM forward pass token 4limits.
         ctx (Context): Incoming context.
 
     Returns:
-        dict: 
+        dict: dictionary of message and available templates.
     """
     await ctx.info('Fetching keys for additional context.')
+
     from resources.db import templates
-    return dict(message=message, templates=templates)
+    import random
+
+    keys = random.sample(list(templates.keys()), limit)
+    samples = {k: templates[k] for k in keys}
+    
+    return dict(message=message, templates=samples)
 
 @mcp.tool()
 async def parse_message(d:dict, ctx:Context):
