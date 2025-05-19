@@ -136,6 +136,17 @@ async def generate_meme(d:dict,
 
     return meme_link
 
+# @mcp.resource(uri="resource://templates",
+#               name="MemeTemplates",
+#               description="DB with name and keys of predefined templates on memegen",
+#               mime_type="application/json")
+# async def fetch_template()->dict:
+#     """Fetches dict db with predefined meme templates.
+
+#     Returns:
+#         dict object: dict db of meme templates.
+#     """
+#     return fetch_resource(KEYS_PATH)
 
 # CLAUDE DESKTOP does not support MCP Sampling so approaching the problem differently.
 # https://modelcontextprotocol.io/docs/concepts/sampling
