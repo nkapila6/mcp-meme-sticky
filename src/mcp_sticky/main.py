@@ -94,16 +94,18 @@ async def parse_message(d:dict, ctx:Context):
     print(d)
     
 @mcp.tool()
-async def generate_meme(message:str,
+async def generate_meme(d:dict,
                         ctx:Context,
+                        use_template:bool,
                         want_tele_sticker:bool=False,
                         save_as_image:bool=True)->str:
     """Generate memes. 
     Takes the input from the previous `parse_message` tool and allows the user to gnerate memes.
 
     Args:
-        message (str): Input message from `parse_message`.
+        d (dict): Input dictionary from `parse_message`.
         ctx (Context): Incoming context.
+        use_template(bool: The LLM decides what to use.
         want_tele_sticker (bool, default=False): If the user wants a Telegram sticker.
         save_as_image (bool, default=True): Saves the image to the users desktop.
 
@@ -113,24 +115,24 @@ async def generate_meme(message:str,
        
     """
     await ctx.info('Stripping out search terms and meme text.')
-    lines = message.strip().split('\n')
-    search_query, meme_text = "", ""
+    search_query, meme_text, template_key = d['SEARCH'], d['TEXT'], d['TEMPLATE_KEY']
 
-    for line in lines:
-        if line.startswith('SEARCH'):
-            search_query = line.replace('SEARCH: ', '').strip()
-        elif line.startswith('TEXT'):
-            meme_text = line.replace('TEXT: ', '').strip()
-
-    url = fetch_image_url(search_query)
-    meme_link = make_meme(url, meme_text)
+    if use_template is not True: 
+        if isinstance(meme_text, list): meme_text = ' '.join(meme_text) # just in case
+        url = fetch_image_url(search_query)
+        meme_link = make_meme(url, meme_text)
+    else: 
+        meme_link = d['LINK']
 
     if save_as_image: 
         path = save_image(meme_link)
+        webbrowser.open(meme_link, new=1, autoraise=True)
         print(f'Image saved at {path}.')
 
-
-    if want_tele_sticker:  return fetch_tele_link(meme_link)
+    if want_tele_sticker:
+        tg_link = fetch_tele_link(meme_link)
+        webbrowser.open(tg_link, new=1, autoraise=True)
+        return tg_link
 
     return meme_link
 
