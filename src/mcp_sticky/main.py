@@ -6,14 +6,16 @@ Created on 2025-05-18 10:00:00 Sunday
 @author: Nikhil Kapila
 """
 
+import webbrowser
 from fastmcp import FastMCP, Context
-from fastmcp.prompts.prompt import Message
+# import os
 
-from utils.fetch import fetch_image_url, fetch_tele_link, make_meme
+from utils.fetch import fetch_image_url, fetch_tele_link # unused: , fetch_resource
+from utils.fetch import make_meme
 from utils.save import save_image
 
-mcp = FastMCP('Sticker Maker for WhatsApp and Telegram', 
-              dependencies=['beautifulsoup4', 'requests'])
+mcp = FastMCP('MCP Sticky: Meme and Sticker Maker for WhatsApp and Telegram', 
+              dependencies=['beautifulsoup4', 'json', 'requests'])
 
 # for preset meme templates
 MEMEGEN_URL_PRESET = ""
