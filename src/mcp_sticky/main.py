@@ -68,23 +68,26 @@ async def parse_message(d:dict, ctx:Context):
     2. Based on your decision of using predefined templates or searching, format the output as follows:
         Format your message as a Python diction as per below.
             {
-                'SEARCH': <search query>
-                'LINK': <created link> using example in the template db.
+                'SEARCH': <search query or Python None value>,
+                'LINK': <created link or Python None value>, using example in the template db.
                 'TEXT': [<meme text>] (this is a Python list of len 1,2,3,4,5,6,8) based on `lines` value in template.
-                'TEMPLATE_KEY': <"key">
+                'TEMPLATE_KEY': <"key" or Python None value>
             }
-            
+
+        IMPORTANT: Use Python's `None` for null values, NOT JSON's `null`.
+        
         (i) If using pre-defined templates:
                 A) `TEMPLATE_KEY` = chosen <"key"> from templates.
-                B) `SEARCH` = `None` Python object.
+                B) If no link is created, `LINK` = None
                 
         (ii) If the LLM decides or user asks to search:
-                A) `TEMPLATE_KEY` = `None` Python object.
+                A) `TEMPLATE_KEY` = None
                 B) `SEARCH` = search query.
+                C) `LINK` = None as this will be generated later.
                 
     The output of this tool goes to the next tool `generate_meme()`.
 
-     CONTENT GUARDRAILS:
+    CONTENT GUARDRAILS:
     - REJECT any requests containing hate speech, explicit sexual content, extreme violence, illegal activities, or harmful stereotypes
     - AVOID creating memes that contain personally identifiable information or could be used for cyberbullying
     - DO NOT generate content that promotes dangerous misinformation or could cause harm
@@ -113,24 +116,32 @@ async def generate_meme(d:dict,
     Args:
         d (dict): Input dictionary from `parse_message`.
         ctx (Context): Incoming context.
-        use_template(bool: The LLM decides what to use.
+        use_template(bool, True or False): The LLM decides what to use based on decision in `parse_message`. Should be True or False.
         want_tele_sticker (bool, default=False): If the user wants a Telegram sticker.
         save_as_image (bool, default=True): Saves the image to the users desktop.
 
     Returns:
        meme_link (str, default): the generated meme link.
-       tele_link (if want_tele_sticker=True): returns Telegram sticker.
+       if want_tele_sticker=True:
+            tele_link (if want_tele_sticker=True): returns Telegram sticker.
        
     """
     await ctx.info('Stripping out search terms and meme text.')
-    search_query, meme_text, template_key = d['SEARCH'], d['TEXT'], d['TEMPLATE_KEY']
+    search_query, meme_text, dbkey = d['SEARCH'], d['TEXT'], d['TEMPLATE_KEY']
 
+    print(d)
     if use_template is not True: 
         if isinstance(meme_text, list): meme_text = ' '.join(meme_text) # just in case
         url = fetch_image_url(search_query)
-        meme_link = make_meme(url, meme_text)
+        meme_link = make_meme_custom(url, meme_text)
     else: 
-        meme_link = d['LINK']
+        # some models cannot generate urls, in this case we check the key and create the link ourselves
+        if is_url(d['LINK']):
+            meme_link = d['LINK']
+        else:
+            from resources.db import templates
+            url = templates[dbkey]['blank']
+            meme_link = make_meme_from_template(url, meme_text)
 
     if save_as_image: 
         path = save_image(meme_link)
