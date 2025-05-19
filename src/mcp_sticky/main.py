@@ -41,39 +41,57 @@ async def fetch_key_context(message:str, ctx:Context)->dict:
     return dict(message=message, templates=templates)
 
 @mcp.tool()
-async def parse_message(message:str, ctx:Context)->tuple:
+async def parse_message(d:dict, ctx:Context):
     """
-    THIS TOOL IS TO BE CALLED FIRST AND IS TO PROVIDE ADDITIONAL CONTEXT to the next tool `generate_meme()`.
+    THIS TOOL IS TO BE CALLED SECOND AND IS TO PROVIDE ADDITIONAL CONTEXT to the next tool `generate_meme()`.
+    The LLM receives an input of user message and existing meme template keys.
+    The LLM is supposed to and analyze the incoming message and template to make a decision.
 
-    Generates a meme or sticker based on the users request. 
-    Analyze the incoming message, extract relevant search terms and generate meme text.
+    1. Look at pre-defined templates in the incoming dictionary object.
+        NOTE:
+            - The templates are a dict where each key has following sub-keys: ['_self','blank','example','id','keywords','lines','name','overlays','source','styles'].
+            - If the chosen template has multiple line as indicated by the `lines` value, return the <meme text> as a Python list of length "lines" where each line is a part of the template.
+            - Create the link based on the text and the example in the db.
+            - PREFER USING EXISTING TEMPLATES INSTEAD OF PERFORMING A SEARCH.
+               If the templates do not fit the usecase, feel free to search.
+            - If the user explicitly specifies you to search then perform a search.
+            - When searching, keep in mind the `CONTENT GUARDRAILS` section.
+        
+    2. Based on your decision of using predefined templates or searching, format the output as follows:
+        Format your message as a Python diction as per below.
+            {
+                'SEARCH': <search query>
+                'LINK': <created link> using example in the template db.
+                'TEXT': [<meme text>] (this is a Python list of len 1,2,3,4,5,6,8) based on `lines` value in template.
+                'TEMPLATE_KEY': <"key">
+            }
+            
+        (i) If using pre-defined templates:
+                A) `TEMPLATE_KEY` = chosen <"key"> from templates.
+                B) `SEARCH` = `None` Python object.
+                
+        (ii) If the LLM decides or user asks to search:
+                A) `TEMPLATE_KEY` = `None` Python object.
+                B) `SEARCH` = search query.
+                
+    The output of this tool goes to the next tool `generate_meme()`.
 
-    CONTENT GUARDRAILS:
+     CONTENT GUARDRAILS:
     - REJECT any requests containing hate speech, explicit sexual content, extreme violence, illegal activities, or harmful stereotypes
     - AVOID creating memes that contain personally identifiable information or could be used for cyberbullying
     - DO NOT generate content that promotes dangerous misinformation or could cause harm
     - REFUSE political extremist content or personal attacks on individuals
     - If a request violates these guidelines, respond with: "I cannot create this meme as it may contain inappropriate content. Please try a different request."
-    
-    Reply with the following:
-    1. What should I search for on Google Search to find an appropriate image? Give a clear search query.
-    2. What text should be placed on the meme? 
-
-    Format the message as:
-    SEARCH: [search query]
-    TEXT: [meme text]
-
-    The output of this tool goes to the next tool `generate_meme()`.
 
     Args:
-        message (str): Input query to make meme
+        d (dict): receives input dictionary of message and meme template keys.
         ctx (Context): Incoming context.
 
     Returns:
         Nothing, the LLM just constructs the input for `generate_meme()`.
     """
     await ctx.info('Parsing input message...')
-    print(message)
+    print(d)
     
 @mcp.tool()
 async def generate_meme(message:str,
