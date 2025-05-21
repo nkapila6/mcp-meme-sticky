@@ -106,7 +106,7 @@ def make_meme_custom(url:str, meme_text:str)->str:
     return MEMEGEN_CUSTOM_URL.format(text=meme_text,
                               url=url)
 
-def make_meme_from_template(url:str, meme_text:list)->str:
+def make_meme_from_template(key:str, DB_PATH:str, meme_text:list[str])->str:
     """Make meme using memegen templates.
 
     Args:
@@ -116,11 +116,13 @@ def make_meme_from_template(url:str, meme_text:list)->str:
     Returns:
         str: Memegen link.
     """
-    # getting rid of .jpg
+
+    db = fetch_resource(DB_PATH)
+    url = db[key]['blank']
+    url = url[:-4] # getting rid of .jpg
     
-    url = url[:-4]
-    for i in meme_text:
-        url = f'{url}/{i}'
+    for sent in meme_text:
+        url = f'{url}/{sent}'
     url = f'{url}.jpg'
     return url
 
