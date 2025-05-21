@@ -25,22 +25,37 @@ The MCP server uses several services. Thank you to the following services / libr
   - [x] Can convert memes to Telegram stickers.
   - [x] Can generate Telegram link to convert image to sticker using custom coded <a href="https://github.com/nkapila6/mcp-sticky-tele">MCP-Sticky Telegram Bot</a>.
     - [X] On going issue with PythonAnywhere where they do not accept links not in their allow list. ~~Ongoing issue [here](https://support.anaconda.com/hc/requests/77653).~~ UPDATE: THEY ADDED IT! 😎
-  
+  - [x] Automatically open Telegram instead of asking user to paste on Browser. (Added, 22nd May)
+  - [x] Automatically open image link. (Added, 22nd May)
+  - [x] Using memegen pre-built templates (easy). (Added, 22nd May)
+
 - Pending work
   - [ ] WhatsApp Sticker conversion.
   - [ ] Log messages.
-  - [ ] Using memegen pre-built templates (easy) using [MCP resource](https://gofastmcp.com/servers/resources).
-  - [ ] Automatically open Telegram instead of asking user to paste on Browser.
+  
   - [ ] Look for alternatives to MCP Sampling specifically for Claude. Can I infer host and change the DAG? Context: [Sampling not available for Claude Desktop Client.](https://modelcontextprotocol.io/docs/concepts/sampling#sampling)
 
 ## Installation instructions
--- coming soon--
-
-In the meantime, if you can infer it from [mcp-local-rag](https://github.com/nkapila6/mcp-local-rag/). Be my guest! Open a PR!
+```json
+{
+  "mcpServers": {
+    "mcp-local-rag":{
+      "command": "uvx",
+        "args": [
+          "--python=3.10",
+          "--from",
+          "git+https://github.com/nkapila6/mcp-sticky",
+          "mcp-sticky"
+        ]
+      }
+  }
+}
+```
 
 ## Example
 Example using Claude MCP Host to generate memes with MCP Sticky!
 <img src='images/example.jpeg'>
+<img src='images/example_2.jpg'>
 
 # Disclaimer regarding AI generated content
 The content generated through this MCP server is the product of automated processes and systems maintained by the MCP host (or client). (These terms are not interchangeable but people tend to use them interchangeable, the right term is host.)
