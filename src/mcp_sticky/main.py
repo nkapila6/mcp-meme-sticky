@@ -101,12 +101,6 @@ def generate_meme_from_meme_template(
     # DB_EMBEDS = get_path_str(files('mcp_sticky.resources').joinpath('db_embeddings.pkl'))
     DB_2LINES_EMBEDS = get_path_str(files('mcp_sticky.resources').joinpath('db_2lines_embeds.pkl'))
     EMBEDDER_PATH = get_path_str(files('mcp_sticky.resources').joinpath('embedder.tflite'))
-
-    # RESOURCE_PATH = os.path.abspath(os.path.join(os.getcwd(), 'resources'))
-    # DB_PATH = os.path.join(RESOURCE_PATH, 'db.pkl')
-    # DB_EMBEDS = os.path.join(RESOURCE_PATH, 'db_embeddings.pkl')
-    # DB_2LINES_EMBEDS = os.path.join(RESOURCE_PATH, 'db_2lines_embeds.pkl')
-    # EMBEDDER_PATH = os.path.join(RESOURCE_PATH, 'embedder.tflite')
     
     key = fetch_key(desc_to_pick_tag, EMBEDDER_PATH, DB_2LINES_EMBEDS)
     meme_link = make_meme_from_template(key, DB_PATH, meme_text)

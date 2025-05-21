@@ -7,7 +7,6 @@ Created on 2025-05-18 23:22:33 Sunday
 """
 
 # Meme saving utility. Weee.
-
 import os, requests
 import webbrowser
 
@@ -31,8 +30,9 @@ def saver(meme_link:str,
     if return_tele_sticker:
         tg_link = fetch_tele_link(meme_link)
         webbrowser.open(tg_link, new=1, autoraise=True)
-        response += f'Opening telegram bot at f{tg_link}'
+        response += f'Opening telegram bot at f{tg_link}. '
 
+    response+= f'The meme URL is {meme_link}.'
     return response
 
 def save_image(url:str, path:Optional[str]=None)->str:
