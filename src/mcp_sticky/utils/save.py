@@ -8,12 +8,32 @@ Created on 2025-05-18 23:22:33 Sunday
 
 # Meme saving utility. Weee.
 
-import os
-import requests
+import os, requests
+import webbrowser
+
 from pathlib import Path
 from typing import Optional
+from .fetch import fetch_tele_link
 
 PATH = os.path.join(Path.home(), "Desktop")
+
+def saver(meme_link:str,
+          save_on_desktop:bool,
+          return_tele_sticker:bool)->str:
+
+    response:str = ""
+    
+    if save_on_desktop: 
+        path:str = save_image(meme_link)
+        webbrowser.open(meme_link, new=1, autoraise=True)
+        response += f'Image saved at {path}. '
+
+    if return_tele_sticker:
+        tg_link = fetch_tele_link(meme_link)
+        webbrowser.open(tg_link, new=1, autoraise=True)
+        response += f'Opening telegram bot at f{tg_link}'
+
+    return response
 
 def save_image(url:str, path:Optional[str]=None)->str:
     """Saves image to Desktop.
