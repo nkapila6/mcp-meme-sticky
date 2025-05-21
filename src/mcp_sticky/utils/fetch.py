@@ -13,12 +13,14 @@ from .crawlers.google import GoogleCrawler
 from mediapipe.tasks import python
 from mediapipe.tasks.python import text
 
+from importlib.resources import files, as_file
+
 TELEGRAM_BOT_URL = "https://t.me/mcp_sticky_bot?text="
 MEMEGEN_CUSTOM_URL = "https://api.memegen.link/images/custom/_/{text}.png?background={url}"
 
 def fetch_embedder(path:str, l2_normalize:bool=True, quantize:bool=True):# ->text.text_embedder.TextEmbedder:
     base_options = python.BaseOptions(model_asset_path=path)
-    l2_normalize, quantize = True, True
+    l2_normalize, quantize = True, False
     options = text.TextEmbedderOptions(
         base_options=base_options, l2_normalize=l2_normalize, quantize=quantize)
     embedder = text.TextEmbedder.create_from_options(options)
@@ -136,3 +138,7 @@ def fetch_tele_link(url:str)->str:
         str: Outgoing bot init link.
     """
     return TELEGRAM_BOT_URL+url
+
+def get_path_str(resource)->str:
+    with as_file(resource) as path:
+        return str(path)
