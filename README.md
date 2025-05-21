@@ -1,6 +1,6 @@
 <img src='images/banner.jpg' width='300' height='200'>
 
-# mcp-sticky
+# mcp-meme-sticky
 Make memes or stickers using MCP server for WhatsApp or Telegram. ✨ no APIs ✨
 
 For Telegram, the MCP server produces a link that can produce the image as a sticker. Can be viewed here: <a href="https://github.com/nkapila6/mcp-sticky-tele">MCP-Sticky Telegram Bot</a>.
@@ -39,12 +39,12 @@ The MCP server uses several services. Thank you to the following services / libr
 ```json
 {
   "mcpServers": {
-    "mcp-local-rag":{
+    "mcp-sticky":{
       "command": "uvx",
         "args": [
           "--python=3.10",
           "--from",
-          "git+https://github.com/nkapila6/mcp-sticky",
+          "git+https://github.com/nkapila6/mcp-meme-sticky",
           "mcp-sticky"
         ]
       }
@@ -53,9 +53,12 @@ The MCP server uses several services. Thank you to the following services / libr
 ```
 
 ## Example
-Example using Claude MCP Host to generate memes with MCP Sticky!
+Example using Claude MCP Host to generate memes with MCP Meme Sticky!
 <img src='images/example.jpeg'>
 <img src='images/example_2.jpg'>
+
+Example using Goose MCP Host to generate memes with MCP Meme Sticky!
+<img width="1508" alt="image" src="https://github.com/user-attachments/assets/268f66b0-7298-4c31-90f7-f2f567ab868c" />
 
 # Disclaimer regarding AI generated content
 The content generated through this MCP server is the product of automated processes and systems maintained by the MCP host (or client). (These terms are not interchangeable but people tend to use them interchangeable, the right term is host.)
