@@ -6,11 +6,11 @@ Created on 2025-05-18 10:00:00 Sunday
 @author: Nikhil Kapila
 """
 
-import os
-
 from .utils.fetch import fetch_image_url, fetch_key, \
-    make_meme_custom, make_meme_from_template
+    make_meme_custom, make_meme_from_template, get_path_str
 from .utils.save import saver
+
+from importlib.resources import files
 
 from typing import Annotated
 from pydantic import Field
@@ -18,13 +18,6 @@ from fastmcp import FastMCP #, Context
 
 mcp = FastMCP('MCP Sticky: Meme Maker. Can convert memes to stickers for Telegram.',
               dependencies=['beautifulsoup4', 'mediapipe', 'requests'])
-
-# preset paths
-RESOURCE_PATH = os.path.abspath(os.path.join(os.getcwd(), 'resources'))
-DB_PATH = os.path.join(RESOURCE_PATH, 'db.pkl')
-DB_EMBEDS = os.path.join(RESOURCE_PATH, 'db_embeddings.pkl')
-DB_2LINES_EMBEDS = os.path.join(RESOURCE_PATH, 'db_2lines_embeds.pkl')
-EMBEDDER_PATH = os.path.join(RESOURCE_PATH, 'embedder.tflite')
 
 @mcp.tool()
 def generate_meme_by_searching(
@@ -99,10 +92,22 @@ def generate_meme_from_meme_template(
         str: The saved links.
     """
 
-    # hardcoding to pick only templates with 2 lines, can fix this only once ctx.sample is supported by Claude Desktop
+    # using filtered db to pick only templates with 2 lines, can fix this only once ctx.sample is supported by Claude Desktop
     # "This feature of MCP is not yet supported in the Claude Desktop client."
     # see here: https://modelcontextprotocol.io/docs/concepts/sampling
 
+    # preset paths
+    DB_PATH = get_path_str(files('mcp_sticky.resources').joinpath('db.pkl'))
+    # DB_EMBEDS = get_path_str(files('mcp_sticky.resources').joinpath('db_embeddings.pkl'))
+    DB_2LINES_EMBEDS = get_path_str(files('mcp_sticky.resources').joinpath('db_2lines_embeds.pkl'))
+    EMBEDDER_PATH = get_path_str(files('mcp_sticky.resources').joinpath('embedder.tflite'))
+
+    # RESOURCE_PATH = os.path.abspath(os.path.join(os.getcwd(), 'resources'))
+    # DB_PATH = os.path.join(RESOURCE_PATH, 'db.pkl')
+    # DB_EMBEDS = os.path.join(RESOURCE_PATH, 'db_embeddings.pkl')
+    # DB_2LINES_EMBEDS = os.path.join(RESOURCE_PATH, 'db_2lines_embeds.pkl')
+    # EMBEDDER_PATH = os.path.join(RESOURCE_PATH, 'embedder.tflite')
+    
     key = fetch_key(desc_to_pick_tag, EMBEDDER_PATH, DB_2LINES_EMBEDS)
     meme_link = make_meme_from_template(key, DB_PATH, meme_text)
     response = saver(meme_link, save_on_desktop, return_tele_sticker)
