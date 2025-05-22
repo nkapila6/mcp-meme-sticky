@@ -1,13 +1,9 @@
 <img src='images/banner.jpg' width='300' height='200'>
 
 # mcp-meme-sticky
-Make memes or stickers using MCP server for WhatsApp or Telegram. ✨ no APIs ✨
+Create AI generated memes using MCP Meme Sticky. Can converted generated memes into stickers for Telegram or WhatsApp (WA coming soon). ✨ no APIs required ✨. 
 
 For Telegram, the MCP server produces a link that can produce the image as a sticker. Can be viewed here: <a href="https://github.com/nkapila6/mcp-sticky-tele">MCP-Sticky Telegram Bot</a>.
-
-
-## Table of Contents
--- coming soon --
 
 ## Attribution
 The MCP server uses several services. Thank you to the following services / libraries.
@@ -36,6 +32,7 @@ The MCP server uses several services. Thank you to the following services / libr
   - [ ] Look for alternatives to MCP Sampling specifically for Claude. Can I infer host and change the DAG? Context: [Sampling not available for Claude Desktop Client.](https://modelcontextprotocol.io/docs/concepts/sampling#sampling)
 
 ## Installation instructions
+Installation using uvx.
 ```json
 {
   "mcpServers": {
@@ -51,6 +48,14 @@ The MCP server uses several services. Thank you to the following services / libr
   }
 }
 ```
+
+## MCP Host
+Should work with any MCP client that supports tool calling.
+Have tested on the following:
+- Claude Desktop
+- Cursor
+- Goose
+- Others? You try!
 
 ## Example
 Example using Claude MCP Host to generate memes with MCP Meme Sticky!
