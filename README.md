@@ -1,6 +1,8 @@
 <p><img src='https://i.imgur.com/vg1Mz5H.jpeg' width='200' height='auto'></p>
 
 # mcp-meme-sticky
+[![smithery badge](https://smithery.ai/badge/@nkapila6/mcp-meme-sticky)](https://smithery.ai/server/@nkapila6/mcp-meme-sticky)
+
 Create AI generated memes using MCP Meme Sticky. Can converted generated memes into stickers for Telegram or WhatsApp (WA coming soon). ✨ no APIs required ✨. 
 
 For Telegram, the MCP server produces a link that can produce the image as a sticker. Can be viewed here: <a href="https://github.com/nkapila6/mcp-sticky-tele">MCP-Sticky Telegram Bot</a>.
@@ -32,6 +34,15 @@ The MCP server uses several services. Thank you to the following services / libr
   - [ ] Look for alternatives to MCP Sampling specifically for Claude. Can I infer host and change the DAG? Context: [Sampling not available for Claude Desktop Client.](https://modelcontextprotocol.io/docs/concepts/sampling#sampling)
 
 ## Installation instructions
+
+### Installing via Smithery
+
+To install mcp-meme-sticky for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@nkapila6/mcp-meme-sticky):
+
+```bash
+npx -y @smithery/cli install @nkapila6/mcp-meme-sticky --client claude
+```
+
 Installation using uvx.
 ```json
 {
