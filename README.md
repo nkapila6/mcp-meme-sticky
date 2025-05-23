@@ -1,4 +1,4 @@
-<img src='images/banner.jpg' width='300' height='200'>
+<p><img src='https://i.imgur.com/vg1Mz5H.jpeg' width='200' height='auto'></p>
 
 # mcp-meme-sticky
 Create AI generated memes using MCP Meme Sticky. Can converted generated memes into stickers for Telegram or WhatsApp (WA coming soon). ✨ no APIs required ✨. 
@@ -58,7 +58,10 @@ Have tested on the following:
 - Others? You try!
 
 ## Example
-Example using Claude MCP Host to generate memes with MCP Meme Sticky!
+Click on the below image to view a video of MCP Meme Sticky on Claude Desktop.
+[![YouTube Video](https://img.youtube.com/vi/q4PJoSmlvc8/0.jpg)](https://www.youtube.com/watch?v=q4PJoSmlvc8)
+
+Image examples of using MCP Meme Sticky on Claude Desktop.
 <img src='images/example.jpeg'>
 <img src='images/example_2.jpg'>
 
