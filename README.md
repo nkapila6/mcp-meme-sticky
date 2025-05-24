@@ -8,6 +8,7 @@ For Telegram, the MCP server produces a link that can produce the image as a sti
 ## Attribution
 The MCP server uses several services. Thank you to the following services / libraries.
 - [Memegen](https://memegen.link/): GOATED open source meme generator!
+- [Mediapipe](https://ai.google.dev/edge/mediapipe/solutions/text/text_embedder): Mediapipe's text embedder that allows me to select meme templates.
 - [PythonAnywhere](https://www.pythonanywhere.com/): For their free Python clouds service! It powers the [Telegram bot](https://github.com/nkapila6/mcp-sticky-tele).
 - [icrawler](https://github.com/hellock/icrawler): My image crawler is heavily inspired by their library.
 - [FastMCP](https://gofastmcp.com/getting-started/welcome): FastMCP makes it easier to make Python MCP servers!
@@ -59,7 +60,8 @@ Have tested on the following:
 
 ## Example
 Click on the below image to view a video of MCP Meme Sticky on Claude Desktop.
-[![YouTube Video](https://img.youtube.com/vi/q4PJoSmlvc8/0.jpg)](https://www.youtube.com/watch?v=q4PJoSmlvc8)
+
+https://github.com/user-attachments/assets/3ad45852-ff98-4a17-9ae2-6201e82704cc
 
 Image examples of using MCP Meme Sticky on Claude Desktop.
 <img src='images/example.jpeg'>
