@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/nkapila6-mcp-meme-sticky-badge.png)](https://mseep.ai/app/nkapila6-mcp-meme-sticky)
+
 <p><img src='https://i.imgur.com/vg1Mz5H.jpeg' width='200' height='auto'></p>
 
 # mcp-meme-sticky
