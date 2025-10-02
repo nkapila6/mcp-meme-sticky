@@ -18,10 +18,9 @@ The MCP server uses several services. Thank you to the following services / libr
   - [x] Can generate custom memes based on prompt.
   - [x] Can save generated memes on the desktop. (Test only on MacOS, please do test it on other OS with your respective hosts and give me feedback via issues)
 - Sticker generation
-  - [x] LLM goes 🔥brr🔥 here. It picks the search query and meme text, not the server. Disclaimer below is there for a reason.
+  - [x] LLM goes 🔥brr🔥 here. It picks the meme text, not the server. Disclaimer below is there for a reason.
   - [x] Can convert memes to Telegram stickers.
   - [x] Can generate Telegram link to convert image to sticker using custom coded <a href="https://github.com/nkapila6/mcp-sticky-tele">MCP-Sticky Telegram Bot</a>.
-    - [X] On going issue with PythonAnywhere where they do not accept links not in their allow list. ~~Ongoing issue [here](https://support.anaconda.com/hc/requests/77653).~~ UPDATE: THEY ADDED IT! 😎
   - [x] Automatically open Telegram instead of asking user to paste on Browser. (Added, 22nd May)
   - [x] Automatically open image link. (Added, 22nd May)
   - [x] Using memegen pre-built templates (easy). (Added, 22nd May)
@@ -29,8 +28,6 @@ The MCP server uses several services. Thank you to the following services / libr
 - Pending work
   - [ ] WhatsApp Sticker conversion.
   - [ ] Log messages.
-  
-  - [ ] Look for alternatives to MCP Sampling specifically for Claude. Can I infer host and change the DAG? Context: [Sampling not available for Claude Desktop Client.](https://modelcontextprotocol.io/docs/concepts/sampling#sampling)
 
 ## Installation instructions
 Installation using uvx.
