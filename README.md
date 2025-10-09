@@ -71,6 +71,11 @@ Image examples of using MCP Meme Sticky on Claude Desktop.
 Example using Goose MCP Host to generate memes with MCP Meme Sticky!
 <img width="1508" alt="image" src="https://github.com/user-attachments/assets/268f66b0-7298-4c31-90f7-f2f567ab868c" />
 
+## Buy Me A Coffee
+If the software I've built has been helpful to you. Please do buy me a coffee, would really appreciate it! 😄
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X51MK4A1)
+
 # Disclaimer regarding AI generated content
 The content generated through this MCP server is the product of automated processes and systems maintained by the MCP host (or client). (These terms are not interchangeable but people tend to use them interchangeable, the right term is host.)
 
