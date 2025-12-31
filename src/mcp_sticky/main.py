@@ -10,8 +10,8 @@ from typing import Annotated
 from pydantic import Field
 from fastmcp import FastMCP #, Context
 
-mcp = FastMCP('MCP Meme Sticky: Meme Maker. Can convert memes to stickers for Telegram.',
-              dependencies=['beautifulsoup4', 'mediapipe', 'requests'])
+mcp = FastMCP('MCP Meme Sticky: Meme Maker. Can convert memes to stickers for Telegram.')
+              # dependencies=['beautifulsoup4', 'mediapipe', 'requests'])
 
 @mcp.tool()
 def generate_meme_by_searching(

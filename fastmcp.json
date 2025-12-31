@@ -1,0 +1,10 @@
+{
+  "entrypoint": "src/mcp_sticky/main.py",
+  "environment": {
+    "dependencies": [
+      "mediapipe",
+      "beautifulsoup4",
+      "requests"
+    ]
+  }
+}
