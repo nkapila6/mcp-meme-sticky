@@ -6,12 +6,6 @@ Created on 2025-05-18 10:00:00 Sunday
 @author: Nikhil Kapila
 """
 
-from .utils.fetch import fetch_image_url, fetch_key, \
-    make_meme_custom, make_meme_from_template, get_path_str
-from .utils.save import saver
-
-from importlib.resources import files
-
 from typing import Annotated
 from pydantic import Field
 from fastmcp import FastMCP #, Context
@@ -49,7 +43,11 @@ def generate_meme_by_searching(
     Returns:
         str: The saved links.
     """
-    
+
+    from .utils.fetch import fetch_image_url, fetch_key, \
+    make_meme_custom, make_meme_from_template, get_path_str
+    from .utils.save import saver
+
     image_url = fetch_image_url(search_query)
     meme_link = make_meme_custom(image_url, meme_text)
     response = saver(meme_link, save_on_desktop, return_tele_sticker)
@@ -91,6 +89,11 @@ def generate_meme_from_meme_template(
     Returns:
         str: The saved links.
     """
+
+    from .utils.fetch import fetch_image_url, fetch_key, \
+    make_meme_custom, make_meme_from_template, get_path_str
+    from .utils.save import saver
+    from importlib.resources import files
 
     # using filtered db to pick only templates with 2 lines, can fix this only once ctx.sample is supported by Claude Desktop
     # "This feature of MCP is not yet supported in the Claude Desktop client."
