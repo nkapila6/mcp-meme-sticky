@@ -80,8 +80,15 @@ def generate_meme_by_searching(
     response = saver(meme_link, save_on_desktop, return_tele_sticker)
 
     if os.environ.get("MCP_STICKY_RETURN_IMAGE"):
-        img_bytes = requests.get(meme_link).content
-        return Image(data=img_bytes, format="png")
+        try:
+            img_bytes = requests.get(meme_link).content
+            if len(img_bytes) < 1_000_000:  # Claude Desktop ~1MB limit
+                fmt = "jpeg" if meme_link.lower().endswith((".jpg", ".jpeg")) else "png"
+                return Image(data=img_bytes, format=fmt)
+            else:
+                return f"Image too large to render inline.\n\n[View meme]({meme_link})\n\n{response}"
+        except Exception:
+            return f"[View meme]({meme_link})\n\n{response}"
     else:
         return response
 
@@ -164,8 +171,15 @@ def generate_meme_from_meme_template(
     response = saver(meme_link, save_on_desktop, return_tele_sticker)
 
     if os.environ.get("MCP_STICKY_RETURN_IMAGE"):
-        img_bytes = requests.get(meme_link).content
-        return Image(data=img_bytes, format="png")
+        try:
+            img_bytes = requests.get(meme_link).content
+            if len(img_bytes) < 1_000_000:  # Claude Desktop ~1MB limit
+                fmt = "jpeg" if meme_link.lower().endswith((".jpg", ".jpeg")) else "png"
+                return Image(data=img_bytes, format=fmt)
+            else:
+                return f"Image too large to render inline.\n\n[View meme]({meme_link})\n\n{response}"
+        except Exception:
+            return f"[View meme]({meme_link})\n\n{response}"
     else:
         return response
 
