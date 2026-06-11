@@ -6,20 +6,42 @@ Created on 2025-05-18 10:00:00 Sunday
 @author: Nikhil Kapila
 """
 
+import os
 from typing import Annotated
-from pydantic import Field
-from fastmcp import FastMCP #, Context
 
-mcp = FastMCP('MCP Meme Sticky: Meme Maker. Can convert memes to stickers for Telegram.')
-              # dependencies=['beautifulsoup4', 'mediapipe', 'requests'])
+import requests
+from fastmcp import FastMCP  # , Context
+from fastmcp.utilities.types import Image
+from pydantic import Field
+
+mcp = FastMCP(
+    "MCP Meme Sticky: Meme Maker. Can convert memes to stickers for Telegram."
+)
+# dependencies=['beautifulsoup4', 'mediapipe', 'requests'])
+
 
 @mcp.tool()
 def generate_meme_by_searching(
-    search_query: Annotated[str, Field(description="The LLM needs to understand what the user is searching for and write a good image search query.")],
-    meme_text: Annotated[str, Field(description="A short and funny text that has to be on the meme image.")],
-    save_on_desktop: Annotated[bool, Field(description="Should the image meme be saved on the desktop?")]=True,
-    return_tele_sticker: Annotated[bool, Field(description="Should the generated meme be converted into a telegram sticker?")]=False
-    )->str:
+    search_query: Annotated[
+        str,
+        Field(
+            description="The LLM needs to understand what the user is searching for and write a good image search query."
+        ),
+    ],
+    meme_text: Annotated[
+        str,
+        Field(description="A short and funny text that has to be on the meme image."),
+    ],
+    save_on_desktop: Annotated[
+        bool, Field(description="Should the image meme be saved on the desktop?")
+    ] = True,
+    return_tele_sticker: Annotated[
+        bool,
+        Field(
+            description="Should the generated meme be converted into a telegram sticker?"
+        ),
+    ] = False,
+) -> str | Image:
     """
     THIS TOOL IS TO BE CALLED IF THE USER WANTS TO GENERATE A MEME USING AN IMAGE SEARCH ON THE WEB. ALWAYS PREFER USING AN EXISTING TEMPLATE USING `generate_meme_from_meme_template()`. UNLESS THE USER EXPLICITLY ASKS TO SEARCH.
 
@@ -41,26 +63,48 @@ def generate_meme_by_searching(
         return_tele_sticker (bool, defaults to False): "Should the generated meme be converted into a telegram sticker?"
 
     Returns:
-        str: The saved links.
+        str | Image: The saved links, or an Image object if MCP_STICKY_RETURN_IMAGE is set.
     """
 
-    from .utils.fetch import fetch_image_url, fetch_key, \
-    make_meme_custom, make_meme_from_template, get_path_str
+    from .utils.fetch import (
+        fetch_image_url,
+        fetch_key,
+        get_path_str,
+        make_meme_custom,
+        make_meme_from_template,
+    )
     from .utils.save import saver
 
     image_url = fetch_image_url(search_query)
     meme_link = make_meme_custom(image_url, meme_text)
     response = saver(meme_link, save_on_desktop, return_tele_sticker)
-    return response
+
+    if os.environ.get("MCP_STICKY_RETURN_IMAGE"):
+        img_bytes = requests.get(meme_link).content
+        return Image(data=img_bytes, format="png")
+    else:
+        return response
 
 
 @mcp.tool()
 def generate_meme_from_meme_template(
-                desc_to_pick_tag: Annotated[str, Field(description="")],
-                meme_text: Annotated[list[str], Field(description="2 sentences that has to be on the meme image. Should be funny and contained. Should be a Python List of Strings.")],
-                save_on_desktop: Annotated[bool, Field(description="Should the image meme be saved on the desktop?")]=True,
-                return_tele_sticker: Annotated[bool, Field(description="Should the generated meme be converted into a telegram sticker?")]=False
-    )->str:
+    desc_to_pick_tag: Annotated[str, Field(description="")],
+    meme_text: Annotated[
+        list[str],
+        Field(
+            description="2 sentences that has to be on the meme image. Should be funny and contained. Should be a Python List of Strings."
+        ),
+    ],
+    save_on_desktop: Annotated[
+        bool, Field(description="Should the image meme be saved on the desktop?")
+    ] = True,
+    return_tele_sticker: Annotated[
+        bool,
+        Field(
+            description="Should the generated meme be converted into a telegram sticker?"
+        ),
+    ] = False,
+) -> str | Image:
     """
     THIS TOOL IS TO BE CALLED IF THE USER WANTS TO GENERATE A MEME USING AN EXISTING TEMPLATE. ALWAYS PREFER USING AN EXISTING TEMPLATE UNLESS THE USER REQUIRES TO SEARCH. IN THE CASE OF SEARCHING, USE: `generate_meme_by_searching()`.
 
@@ -87,28 +131,44 @@ def generate_meme_from_meme_template(
         return_tele_sticker (bool, defaults to False): "Should the generated meme be converted into a telegram sticker?"
 
     Returns:
-        str: The saved links.
+        str | Image: The saved links, or an Image object if MCP_STICKY_RETURN_IMAGE is set.
     """
 
-    from .utils.fetch import fetch_image_url, fetch_key, \
-    make_meme_custom, make_meme_from_template, get_path_str
-    from .utils.save import saver
     from importlib.resources import files
+
+    from .utils.fetch import (
+        fetch_image_url,
+        fetch_key,
+        get_path_str,
+        make_meme_custom,
+        make_meme_from_template,
+    )
+    from .utils.save import saver
 
     # using filtered db to pick only templates with 2 lines, can fix this only once ctx.sample is supported by Claude Desktop
     # "This feature of MCP is not yet supported in the Claude Desktop client."
     # see here: https://modelcontextprotocol.io/docs/concepts/sampling
 
     # preset paths
-    DB_PATH = get_path_str(files('mcp_sticky.resources').joinpath('db.pkl'))
+    DB_PATH = get_path_str(files("mcp_sticky.resources").joinpath("db.pkl"))
     # DB_EMBEDS = get_path_str(files('mcp_sticky.resources').joinpath('db_embeddings.pkl'))
-    DB_2LINES_EMBEDS = get_path_str(files('mcp_sticky.resources').joinpath('db_2lines_embeds.pkl'))
-    EMBEDDER_PATH = get_path_str(files('mcp_sticky.resources').joinpath('embedder.tflite'))
-    
+    DB_2LINES_EMBEDS = get_path_str(
+        files("mcp_sticky.resources").joinpath("db_2lines_embeds.pkl")
+    )
+    EMBEDDER_PATH = get_path_str(
+        files("mcp_sticky.resources").joinpath("embedder.tflite")
+    )
+
     key = fetch_key(desc_to_pick_tag, EMBEDDER_PATH, DB_2LINES_EMBEDS)
     meme_link = make_meme_from_template(key, DB_PATH, meme_text)
     response = saver(meme_link, save_on_desktop, return_tele_sticker)
-    return response
+
+    if os.environ.get("MCP_STICKY_RETURN_IMAGE"):
+        img_bytes = requests.get(meme_link).content
+        return Image(data=img_bytes, format="png")
+    else:
+        return response
+
 
 if __name__ == "__main__":
     mcp.run()

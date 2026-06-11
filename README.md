@@ -18,9 +18,7 @@ The MCP server uses several services. Thank you to the following services / libr
   - [x] Can generate custom memes based on prompt.
   - [x] Can save generated memes on the desktop. (Test only on MacOS, please do test it on other OS with your respective hosts and give me feedback via issues)
 - Sticker generation
-  - [x] LLM goes 🔥brr🔥 here. It picks the meme text, not the server. Disclaimer below is there for a reason.
-  - [x] Can convert memes to Telegram stickers.
-  - [x] Can generate Telegram link to convert image to sticker using custom coded <a href="https://github.com/nkapila6/mcp-sticky-tele">MCP-Sticky Telegram Bot</a>.
+  - [x] Can convert memes to Telegram stickers (if the bot is online) using custom coded <a href="https://github.com/nkapila6/mcp-sticky-tele">MCP-Sticky Telegram Bot</a>.
   - [x] Automatically open Telegram instead of asking user to paste on Browser. (Added, 22nd May)
   - [x] Automatically open image link. (Added, 22nd May)
   - [x] Using memegen pre-built templates (easy). (Added, 22nd May)
@@ -41,7 +39,10 @@ Installation using uvx.
           "--from",
           "git+https://github.com/nkapila6/mcp-meme-sticky",
           "mcp-sticky"
-        ]
+        ],
+        "env": {
+          "MCP_STICKY_RETURN_IMAGE": "true"
+        }
       }
   }
 }
